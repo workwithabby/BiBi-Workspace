@@ -34,14 +34,42 @@ interface NoteEditorProps {
 interface AutoResizeTextareaProps {
   value: string;
   onChange: (value: string) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   className?: string;
   rows?: number;
 }
 
+const applyTextFormatting = (
+  value: string,
+  selectionStart: number,
+  selectionEnd: number,
+  format: 'bold' | 'italic' | 'underline'
+) => {
+  const wrappers = {
+    bold: ['**', '**'],
+    italic: ['*', '*'],
+    underline: ['<u>', '</u>']
+  } as const;
+
+  const [prefix, suffix] = wrappers[format];
+  const selectedText = value.slice(selectionStart, selectionEnd);
+  const replacementText = selectionStart === selectionEnd
+    ? `${prefix}${suffix}`
+    : `${prefix}${selectedText}${suffix}`;
+
+  return {
+    nextValue: `${value.slice(0, selectionStart)}${replacementText}${value.slice(selectionEnd)}`,
+    cursorPosition: selectionStart === selectionEnd
+      ? selectionStart + prefix.length
+      : selectionEnd + suffix.length
+  };
+};
+
 const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
   value,
   onChange,
+  onKeyDown,
   placeholder,
   className,
   rows = 4
@@ -62,6 +90,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
       rows={rows}
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
       className={className}
     />
@@ -156,6 +185,34 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
     navigator.clipboard.writeText(codeContent);
     setCopiedBlockId(blockId);
     setTimeout(() => setCopiedBlockId(null), 2000);
+  };
+
+  const handleTextShortcut = (
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
+    currentValue: string,
+    onValueChange: (value: string) => void
+  ) => {
+    const isModifierPressed = event.ctrlKey || event.metaKey;
+    if (!isModifierPressed) return;
+
+    let format: 'bold' | 'italic' | 'underline' | null = null;
+    if (event.key.toLowerCase() === 'b') format = 'bold';
+    if (event.key.toLowerCase() === 'i') format = 'italic';
+    if (event.key.toLowerCase() === 'u') format = 'underline';
+
+    if (!format) return;
+
+    event.preventDefault();
+    const textarea = event.currentTarget;
+    const { selectionStart, selectionEnd } = textarea;
+    const { nextValue, cursorPosition } = applyTextFormatting(currentValue, selectionStart, selectionEnd, format);
+
+    onValueChange(nextValue);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(cursorPosition, cursorPosition);
+    });
   };
 
   const handleDeleteNoteConfirm = () => {
@@ -338,6 +395,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                   <AutoResizeTextarea
                     value={block.content}
                     onChange={(value) => handleBlockContentChange(block.id, value)}
+                    onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
                     placeholder="Type text..."
                     rows={4}
                     className="w-full min-h-[7rem] text-sm text-[#021A54] dark:text-zinc-200 leading-7 bg-transparent border-none outline-hidden resize-none overflow-hidden py-1 placeholder-[#021A54]/30 dark:placeholder-zinc-500"
@@ -411,6 +469,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
+                      onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="Callout note or key takeaway..."
                       rows={3}
                       className="w-full min-h-[4rem] text-xs font-semibold text-[#021A54] dark:text-[#FFB3D1] bg-transparent border-none outline-hidden resize-none overflow-hidden"
@@ -423,6 +482,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
+                      onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="Quote or inspirational thought..."
                       rows={3}
                       className="w-full min-h-[4rem] text-sm text-[#021A54]/80 dark:text-zinc-300 bg-transparent border-none outline-hidden resize-none overflow-hidden"
@@ -454,6 +514,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
+                      onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="// Type code here..."
                       rows={6}
                       className="w-full min-h-[6rem] text-xs font-mono bg-transparent border-none outline-hidden resize-none overflow-hidden text-pink-200 dark:text-pink-300"

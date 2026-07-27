@@ -1,6 +1,6 @@
 # 📘 BiBi Workspace
 
-BiBi Workspace is a course management, note-taking, planning, timetable scheduling, file tracking, and cloud synchronization in one polished website appication.
+BiBi Workspace is a course management, note-taking, planning, timetable scheduling, file tracking, and cloud synchronization platform in one polished web application.
 
 ## 👩‍💻 Developed by
 
@@ -31,7 +31,10 @@ BiBi Workspace is a web application designed to help students manage their acade
 - Tailwind CSS
 - Firebase Authentication
 - Firebase Firestore
-- Firebase Firestorw
+
+## 🤖 AI Assistance
+
+This project was developed with AI assistance from tools like **Claude**, **ChatGPT**, and **Gemini** for code suggestions, debugging, and review.
 
 ## 🚀 Run Locally
 

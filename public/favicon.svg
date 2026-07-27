@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF85BB" />
+      <stop offset="100%" stop-color="#FFCEE3" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#021A54" flood-opacity="0.15" />
+    </filter>
+  </defs>  
+  <!-- Rounded Base Container -->
+  <rect x="32" y="32" width="448" height="448" rx="128" fill="url(#bg)" />
+  
+  <!-- Subtle inner border -->
+  <rect x="32" y="32" width="448" height="448" rx="128" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-opacity="0.5" />
+  
+  <!-- Central Heart Icon -->
+  <path d="M256 420 C230 395 100 290 100 190 C100 130 145 85 205 85 C238 85 250 100 256 112 C262 100 274 85 307 85 C367 85 412 130 412 190 C412 290 282 395 256 420 Z" fill="#021A54" filter="url(#shadow)" />
+  
+  <!-- Heart Highlight / Shine -->
+  <path d="M165 140 C180 140 190 150 190 165 C190 170 185 172 180 172 C175 172 172 168 172 162 C172 153 166 148 158 148 C153 148 150 144 150 140 C150 136 155 140 165 140 Z" fill="#FFFFFF" opacity="0.8" />
+</svg>

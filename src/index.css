@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-navy: #021A54;
+  --color-pink-vibrant: #FF85BB;
+  --color-pink-soft: #FFCEE3;
+  --color-pink-light: #FFF0F6;
+  --color-canvas: #F5F5F5;
+}
+
+@layer base {
+  * {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: #F5F5F5;
+    color: #021A54;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Prevent mobile browser auto-zoom on input focus without inflating dropdowns or typography */
+  @media screen and (max-width: 768px) {
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="search"]:focus,
+    textarea:focus {
+      font-size: 16px;
+    }
+  }
+
+  html.dark body {
+    background-color: #000000;
+    color: #F8FAFC;
+  }
+}
+
+/* Print styling for Timetable */
+@media print {
+  body {
+    background-color: white !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-area {
+    width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #FFCEE3;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF85BB;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #000000;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #222222;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #FF85BB;
+}
+
+

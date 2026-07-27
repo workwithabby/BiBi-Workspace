@@ -66,6 +66,56 @@ const applyTextFormatting = (
   };
 };
 
+const ContentEditable: React.FC<{
+  html: string;
+  onChange: (html: string) => void;
+  className?: string;
+  placeholder?: string;
+}> = ({ html, onChange, className, placeholder }) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (el.innerHTML !== html) {
+      el.innerHTML = html || '';
+    }
+  }, [html]);
+
+  const handleInput = () => {
+    const el = ref.current;
+    if (!el) return;
+    onChange(el.innerHTML);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const isMod = e.ctrlKey || e.metaKey;
+    if (!isMod) return;
+    const key = e.key.toLowerCase();
+    if (key === 'b' || key === 'i' || key === 'u') {
+      e.preventDefault();
+      if (key === 'b') document.execCommand('bold');
+      if (key === 'i') document.execCommand('italic');
+      if (key === 'u') document.execCommand('underline');
+      // trigger change
+      requestAnimationFrame(() => handleInput());
+    }
+  };
+
+  return (
+    <div
+      ref={ref}
+      contentEditable
+      suppressContentEditableWarning
+      onInput={handleInput}
+      onKeyDown={handleKeyDown}
+      className={className}
+      data-placeholder={placeholder}
+      style={{ outline: 'none' }}
+    />
+  );
+};
+
 const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
   value,
   onChange,
@@ -392,12 +442,10 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
               {/* Main Render Block Content */}
               <div className="flex-1 min-w-0">
                 {block.type === 'paragraph' && (
-                  <AutoResizeTextarea
-                    value={block.content}
-                    onChange={(value) => handleBlockContentChange(block.id, value)}
-                    onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
+                  <ContentEditable
+                    html={block.content}
+                    onChange={(html) => handleBlockContentChange(block.id, html)}
                     placeholder="Type text..."
-                    rows={4}
                     className="w-full min-h-[7rem] text-sm text-[#021A54] dark:text-zinc-200 leading-7 bg-transparent border-none outline-hidden resize-none overflow-hidden py-1 placeholder-[#021A54]/30 dark:placeholder-zinc-500"
                   />
                 )}
@@ -466,12 +514,10 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                 {block.type === 'callout' && (
                   <div className="p-3.5 rounded-2xl bg-[#FFF0F6] dark:bg-[#2A1828] border border-[#FFCEE3] dark:border-[#4A2038] flex items-start gap-3">
                     <Info size={18} className="text-[#FF85BB] shrink-0 mt-0.5" />
-                    <AutoResizeTextarea
-                      value={block.content}
-                      onChange={(value) => handleBlockContentChange(block.id, value)}
-                      onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
+                    <ContentEditable
+                      html={block.content}
+                      onChange={(html) => handleBlockContentChange(block.id, html)}
                       placeholder="Callout note or key takeaway..."
-                      rows={3}
                       className="w-full min-h-[4rem] text-xs font-semibold text-[#021A54] dark:text-[#FFB3D1] bg-transparent border-none outline-hidden resize-none overflow-hidden"
                     />
                   </div>
@@ -479,12 +525,10 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
 
                 {block.type === 'quote' && (
                   <div className="pl-4 border-l-4 border-[#FF85BB] py-1 italic bg-[#FFF0F6]/40 dark:bg-zinc-900/40 rounded-r-xl">
-                    <AutoResizeTextarea
-                      value={block.content}
-                      onChange={(value) => handleBlockContentChange(block.id, value)}
-                      onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
+                    <ContentEditable
+                      html={block.content}
+                      onChange={(html) => handleBlockContentChange(block.id, html)}
                       placeholder="Quote or inspirational thought..."
-                      rows={3}
                       className="w-full min-h-[4rem] text-sm text-[#021A54]/80 dark:text-zinc-300 bg-transparent border-none outline-hidden resize-none overflow-hidden"
                     />
                   </div>
@@ -514,7 +558,6 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
-                      onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="// Type code here..."
                       rows={6}
                       className="w-full min-h-[6rem] text-xs font-mono bg-transparent border-none outline-hidden resize-none overflow-hidden text-pink-200 dark:text-pink-300"

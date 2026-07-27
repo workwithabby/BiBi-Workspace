@@ -416,7 +416,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                 <select
                   value={block.type}
                   onChange={(e) => handleBlockTypeChange(block.id, e.target.value as BlockType)}
-                  className="text-[10px] p-1 bg-white dark:bg-black border border-[#FFCEE3] dark:border-[#222222] rounded-lg text-[#021A54] dark:text-zinc-200 font-semibold"
+                  className="text-[10px] p-1 bg-white dark:bg-black border border-[#FFCEE3] dark:border-[#222222] rounded-lg text-[#021A54] dark:text-zinc-100 font-semibold"
                 >
                   <option value="paragraph">Text</option>
                   <option value="heading-1">H1 Heading</option>
@@ -446,7 +446,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     html={block.content}
                     onChange={(html) => handleBlockContentChange(block.id, html)}
                     placeholder="Type text..."
-                    className="w-full min-h-[7rem] text-sm text-[#021A54] dark:text-zinc-200 leading-7 bg-transparent border-none outline-hidden resize-none overflow-hidden py-1 placeholder-[#021A54]/30 dark:placeholder-zinc-500"
+                    className="w-full min-h-[7rem] text-sm text-[#021A54] dark:text-zinc-100 leading-7 bg-transparent border-none outline-hidden resize-none overflow-hidden py-1 placeholder-[#021A54]/30 dark:placeholder-zinc-500"
                   />
                 )}
 
@@ -493,7 +493,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
                       placeholder="Task to do..."
-                      className={`w-full text-sm bg-transparent border-none outline-hidden ${block.checked ? 'line-through text-[#021A54]/40 dark:text-zinc-500' : 'text-[#021A54] dark:text-zinc-200'}`}
+                      className={`w-full text-sm bg-transparent border-none outline-hidden ${block.checked ? 'line-through text-[#021A54]/40 dark:text-zinc-500' : 'text-[#021A54] dark:text-zinc-100'}`}
                     />
                   </div>
                 )}
@@ -506,7 +506,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
                       placeholder="Bullet list item..."
-                      className="w-full text-sm text-[#021A54] dark:text-zinc-200 bg-transparent border-none outline-hidden"
+                      className="w-full text-sm text-[#021A54] dark:text-zinc-100 bg-transparent border-none outline-hidden"
                     />
                   </div>
                 )}

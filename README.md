@@ -1,6 +1,6 @@
 # 📘 BiBi Workspace
 
-A modern React productivity dashboard for students and creators. BiBi Workspace combines course management, note-taking, planning, timetable scheduling, file tracking, and cloud synchronization in one polished app.
+BiBi Workspace is a course management, note-taking, planning, timetable scheduling, file tracking, and cloud synchronization in one polished website appication.
 
 ## 👩‍💻 Developed by
 
@@ -31,18 +31,7 @@ BiBi Workspace is a web application designed to help students manage their acade
 - Tailwind CSS
 - Firebase Authentication
 - Firebase Firestore
-- Lucide React icons
-- Motion for animated UI transitions
-- Canvas Confetti for celebration effects
-- HTML-to-image for image exports
-
-## 📁 Project Structure
-
-- `src/` — application source code
-- `src/components/` — UI components
-- `src/context/WorkspaceContext.tsx` — app data and sync logic
-- `src/lib/firebase.ts` — Firebase initialization
-- `firebase-applet-config.json` — local Firebase configuration
+- Firebase Firestorw
 
 ## 🚀 Run Locally
 

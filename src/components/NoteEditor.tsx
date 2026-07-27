@@ -189,7 +189,6 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
 
   const handleTextShortcut = (
     event: React.KeyboardEvent<HTMLTextAreaElement>,
-    currentValue: string,
     onValueChange: (value: string) => void
   ) => {
     const isModifierPressed = event.ctrlKey || event.metaKey;
@@ -204,6 +203,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
 
     event.preventDefault();
     const textarea = event.currentTarget;
+    const currentValue = textarea.value;
     const { selectionStart, selectionEnd } = textarea;
     const { nextValue, cursorPosition } = applyTextFormatting(currentValue, selectionStart, selectionEnd, format);
 
@@ -395,7 +395,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                   <AutoResizeTextarea
                     value={block.content}
                     onChange={(value) => handleBlockContentChange(block.id, value)}
-                    onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
+                    onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
                     placeholder="Type text..."
                     rows={4}
                     className="w-full min-h-[7rem] text-sm text-[#021A54] dark:text-zinc-200 leading-7 bg-transparent border-none outline-hidden resize-none overflow-hidden py-1 placeholder-[#021A54]/30 dark:placeholder-zinc-500"
@@ -469,7 +469,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
-                      onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
+                      onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="Callout note or key takeaway..."
                       rows={3}
                       className="w-full min-h-[4rem] text-xs font-semibold text-[#021A54] dark:text-[#FFB3D1] bg-transparent border-none outline-hidden resize-none overflow-hidden"
@@ -482,7 +482,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
-                      onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
+                      onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="Quote or inspirational thought..."
                       rows={3}
                       className="w-full min-h-[4rem] text-sm text-[#021A54]/80 dark:text-zinc-300 bg-transparent border-none outline-hidden resize-none overflow-hidden"
@@ -514,7 +514,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ noteId, onBack }) => {
                     <AutoResizeTextarea
                       value={block.content}
                       onChange={(value) => handleBlockContentChange(block.id, value)}
-                      onKeyDown={(event) => handleTextShortcut(event, block.content, (value) => handleBlockContentChange(block.id, value))}
+                      onKeyDown={(event) => handleTextShortcut(event, (value) => handleBlockContentChange(block.id, value))}
                       placeholder="// Type code here..."
                       rows={6}
                       className="w-full min-h-[6rem] text-xs font-mono bg-transparent border-none outline-hidden resize-none overflow-hidden text-pink-200 dark:text-pink-300"
